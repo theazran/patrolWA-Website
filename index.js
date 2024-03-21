@@ -12,6 +12,17 @@ const bacaDataJson = () => {
   return JSON.parse(data);
 };
 
+const data = [
+  {
+    namaPetugas: "Renaldi",
+    nomorWhatsApp: "1234567890",
+  },
+  {
+    namaPetugas: "Bahri",
+    nomorWhatsApp: "0987654321",
+  },
+];
+
 const upload = multer({ storage: multer.memoryStorage() });
 
 app.use(express.static(path.join(__dirname, "public")));
@@ -30,7 +41,7 @@ app.post("/upload", upload.single("image"), async (req, res) => {
 });
 
 app.get("/api/data", (req, res) => {
-  const data = bacaDataJson();
+  // const data = bacaDataJson();
   res.json(data);
 });
 
