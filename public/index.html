@@ -80,6 +80,7 @@
       accept="image/*"
       capture="camera"
       class="hidden"
+      value=""
     />
     <label
       for="fileInput"
@@ -95,6 +96,7 @@
           id="imageUrlInput"
           placeholder="URL Gambar"
           class="mb-4"
+          value="-"
           hidden
         />
         <div class="mb-4">
@@ -144,6 +146,7 @@
         const imageUrl = imageUrlInput.value;
         const keterangan = form.elements["Keterangan"].value;
         const nomorWhatsApp = petugasSelect.value;
+
         if (!keterangan) {
           alert("Mohon lengkapi keterangan.");
           return;
