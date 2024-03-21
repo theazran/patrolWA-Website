@@ -4,6 +4,8 @@ const { uploadByBuffer } = require("telegraph-uploader");
 const path = require("path");
 
 const app = express();
+app.use(bodyParser.json());
+
 const port = 3000;
 const fs = require("fs");
 
@@ -37,3 +39,5 @@ app.get("/api/data", (req, res) => {
 app.listen(port, () => {
   console.log(`${port}`);
 });
+
+module.exports = app;
