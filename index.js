@@ -128,8 +128,6 @@ app.get("/status", (req, res) => {
 app.post("/webhook", async (req, res) => {
   const payload = req.body;
   console.log("Payload yang diterima:", payload);
-  res.status(200).send("Webhook menerima payload.");
-
   const sesi = payload.session;
   const from = payload.from;
   const fromMe = payload.sender;
@@ -168,9 +166,8 @@ app.post("/webhook", async (req, res) => {
           console.log("PDF file sent to WhatsApp successfully.");
           kirimPesan(
             from,
-            "document",
+            "text",
             `Laporan Bulan ${monthTitle}`,
-            `https://patrolwa.vercel.app/${pdfFileName}`,
             ``,
           );
         }, 5000);
