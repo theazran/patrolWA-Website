@@ -125,6 +125,20 @@ app.get("/status", (req, res) => {
   res.send("Server is running");
 });
 
+app.get("/download/:fileName", (req, res) => {
+  const fileName = req.params.fileName;
+  const filePath = path.join(__dirname, fileName);
+  const stat = fs.statSync(filePath);
+
+  res.writeHead(200, {
+    "Content-Type": "application/pdf",
+    "Content-Length": stat.size,
+  });
+
+  const readStream = fs.createReadStream(filePath);
+  readStream.pipe(res);
+});
+
 app.post("/webhook", async (req, res) => {
   const payload = req.body;
   console.log("Payload yang diterima:", payload);
@@ -166,9 +180,9 @@ app.post("/webhook", async (req, res) => {
           console.log("PDF file sent to WhatsApp successfully.");
           kirimPesan(
             from,
-            "text",
+            "document",
             `Laporan Bulan ${monthTitle}`,
-            ``,
+            `https://patrolwa.vercel.app/download/${pdfFileName}`,
           );
         }, 5000);
       } catch (error) {
