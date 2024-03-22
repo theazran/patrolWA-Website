@@ -122,6 +122,20 @@ async function generatePDF(data, targetMonth) {
     });
 }
 
+app.get('/package', (req, res) => {
+  // Baca package.json
+  fs.readFile('package.json', 'utf8', (err, data) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Error reading package.json' });
+    }
+
+    // Parse data JSON dan kirimkan sebagai respons
+    const packageData = JSON.parse(data);
+    res.json(packageData);
+  });
+});
+
 app.get("/status", (req, res) => {
   kirimPesan("6285255646434", "text", `runtime`, "");
   res.send("Server is running");
@@ -160,11 +174,12 @@ app.post("/webhook", async (req, res) => {
     : null;
 
   if (sesi === "pat") {
-    if (isGroup) return
+    if (isGroup) return;
     if (fromMe === "62895411310182@s.whatsapp.net") return;
     if (cmd === "ping") {
       kirimPesan(from, "text", `pong!`, "");
     }
+
     if (cmd === "lapor") {
       const allowedUser = [
         { Nama: "Security", WA: "6285255646434" },
