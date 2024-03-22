@@ -1,3 +1,4 @@
+const querystring = require("node:querystring");
 const express = require("express");
 const bodyParser = require("body-parser");
 const multer = require("multer");
@@ -11,6 +12,7 @@ app.use(bodyParser.json());
 const port = 3000;
 const fs = require("fs");
 const pdf = require("html-pdf");
+const idApp = `https://script.google.com/macros/s/AKfycbzLAqrB3EDuOomueHyZFPaPQy2OfVnvbsyBABPCMYe9Hf4Loqsh-LYlaXOMApQEs8eI4Q/exec?`;
 
 const data = [
   {
@@ -146,6 +148,7 @@ app.post("/webhook", async (req, res) => {
   const from = payload.from;
   const fromMe = payload.sender;
   const body = payload.body;
+  const isGroup = payload.isGroup;
   global.prefix = /^[./~!#%^&+=\-,;:()]/.test(body)
     ? body.match(/^[./~!#%^&+=\-,;:()]/gi)
     : "#";
@@ -157,9 +160,30 @@ app.post("/webhook", async (req, res) => {
     : null;
 
   if (sesi === "pat") {
+    if (isGroup) return
     if (fromMe === "62895411310182@s.whatsapp.net") return;
     if (cmd === "ping") {
       kirimPesan(from, "text", `pong!`, "");
+    }
+    if (cmd === "lapor") {
+      const allowedUser = [
+        { Nama: "Security", WA: "6285255646434" },
+        { Nama: "Renaldi", WA: "6281241559321" },
+        { Nama: "Security", WA: "6285255646333" },
+      ];
+      console.log(arg);
+      const data = {
+        Petugas: allowedUser.Nama,
+        Keterangan: arg,
+        Foto: "-",
+      };
+      const res = await fetch(idApp + querystring.stringify(data), {
+        method: "POST",
+      });
+      const respon = await res.json();
+      if (respon.result === "success") {
+        kirimPesan(from, "text", `Data berhasil disimpan!`, "");
+      }
     }
     if (cmd === "laporan") {
       if (args.length < 1)
