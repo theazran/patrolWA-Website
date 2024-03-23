@@ -223,7 +223,7 @@ app.post("/webhook", async (req, res) => {
           "",
         );
       const targetMonth = arg;
-      kirimPesan(from, "text", "Mohon tunggu sebentar!", "");
+      kirimPesan(from, "text", "Under maintenance!", "");
       try {
         const rawData = await fetchData();
         const filteredData = await filterDataByMonth(rawData, targetMonth);
