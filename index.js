@@ -6,6 +6,7 @@ const { uploadByBuffer } = require("telegraph-uploader");
 const path = require("path");
 const kirimPesan = require("./lib/function");
 const axios = require("axios");
+const { exec } = require("child_process");
 
 const app = express();
 app.use(bodyParser.json());
@@ -155,6 +156,17 @@ app.get("/download/:fileName", (req, res) => {
   readStream.pipe(res);
 });
 
+app.get("/list-directory", (req, res) => {
+  const directoryPath = "./"; // Ubah sesuai dengan direktori yang ingin Anda lihat
+  fs.readdir(directoryPath, (err, files) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Gagal membaca direktori." });
+    }
+    res.status(200).json({ files });
+  });
+});
+
 app.post("/webhook", async (req, res) => {
   const payload = req.body;
   console.log("Payload yang diterima:", payload);
@@ -255,6 +267,43 @@ app.post("/upload", upload.single("image"), async (req, res) => {
 app.get("/api/data", (req, res) => {
   // const data = bacaDataJson();
   res.json(data);
+});
+
+app.get("/gitlog", (req, res) => {
+  exec('git log --pretty=format:"%s|%ad"', (error, stdout, stderr) => {
+    if (error) {
+      console.error(`exec error: ${error}`);
+      res.status(500).json({ error: "Internal server error" });
+      return;
+    }
+
+    if (stderr) {
+      console.error(`stderr: ${stderr}`);
+    }
+
+    const commits = stdout.split("\n").map((commit) => {
+      const [comment, date] = commit.split("|");
+      return { comment, date };
+    });
+
+    res.json({ commits });
+  });
+});
+
+app.get("/pdf", (req, res) => {
+  const bulan = req.query.bulan;
+  const targetMonth = bulan; // Contoh: untuk bulan Januari
+  fetchData()
+    .then((data) => {
+      return filterDataByMonth(data, targetMonth);
+    })
+    .then((filteredData) => {
+      generatePDF(filteredData, targetMonth);
+      res.send(`Laporan PDF untuk bulan ${monthTitle} berhasil dihasilkan.`);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 });
 
 app.listen(port, () => {
