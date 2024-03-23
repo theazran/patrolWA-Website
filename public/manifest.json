@@ -1,0 +1,25 @@
+{
+  "name": "PatrolWA - Patroli WhatsApp",
+  "short_name": "PatrolWA",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "icons": [
+    {
+      "src": "icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "description": "Aplikasi yang memudahkan Satpam dalam melaporkan dan mencetak laporan bulanan",
+  "lang": "id",
+  "orientation": "any"
+}

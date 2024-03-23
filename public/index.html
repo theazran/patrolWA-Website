@@ -17,6 +17,7 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    <link rel="manifest" href="/manifest.json" />
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -62,6 +63,11 @@
     <div class="container mt-5">
       <div class="row justify-content-center">
         <div class="col-md-6">
+          <div id="offline-message" style="display: none">
+            <div class="alert alert-danger" role="alert">
+              Anda sedang offline. Silakan cek koneksi internet Anda.
+            </div>
+          </div>
           <div id="imageContainer" class="mb-4 text-center"></div>
           <div
             class="loading-indicator btn btn-none btn-small mb-4"
@@ -383,11 +389,28 @@
           document.getElementById("waInput").value = this.value;
         });
     </script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("/serviceworker.js")
+            .then((registration) => {
+              console.log("Service Worker registered:", registration);
+            })
+            .catch((error) => {
+              console.log("Service Worker registration failed:", error);
+            });
+        });
+      }
+
+      if (!navigator.onLine) {
+        document.getElementById("offline-message").style.display = "block";
+        document.getElementById("app").style.display = "none";
+      }
+    </script>
     <footer class="footer">
       <div class="container">
-        <span class="text-muted" id="packageData"
-          >Place sticky footer content here.</span
-        >
+        <span class="text-muted" id="packageData"></span>
         <br />
         <small id="nama"></small>
       </div>
