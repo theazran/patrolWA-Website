@@ -122,12 +122,12 @@ async function generatePDF(data, targetMonth) {
     });
 }
 
-app.get('/package', (req, res) => {
+app.get("/package", (req, res) => {
   // Baca package.json
-  fs.readFile('package.json', 'utf8', (err, data) => {
+  fs.readFile("package.json", "utf8", (err, data) => {
     if (err) {
       console.error(err);
-      return res.status(500).json({ error: 'Error reading package.json' });
+      return res.status(500).json({ error: "Error reading package.json" });
     }
 
     // Parse data JSON dan kirimkan sebagai respons
@@ -181,11 +181,13 @@ app.post("/webhook", async (req, res) => {
     }
 
     if (cmd === "lapor") {
-      const allowedUser = [
+      const senderWA = from.split("@")[0];
+      const allowedUsers = [
         { Nama: "Security", WA: "6285255646434" },
         { Nama: "Renaldi", WA: "6281241559321" },
         { Nama: "Security", WA: "6285255646333" },
       ];
+      const allowedUser = allowedUsers.find((user) => user.WA === senderWA);
       console.log(arg);
       const data = {
         Petugas: allowedUser.Nama,
