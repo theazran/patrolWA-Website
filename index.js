@@ -32,7 +32,7 @@ app.use(express.static(path.join(__dirname, "public")));
 async function fetchData() {
   try {
     const response = await axios.get(
-      "https://opensheet.elk.sh/1kwsvHO00ZOZj3kJ-MkFeJSNzy0k0EfKHpU8X8RlOv8M/Sheet1",
+      "https://opensheet.elk.sh/1kwsvHO00ZOZj3kJ-MkFeJSNzy0k0EfKHpU8X8RlOv8M/Sheet1"
     );
     return response.data;
   } catch (error) {
@@ -76,7 +76,7 @@ async function generatePDF(data, targetMonth) {
         <td>${entry.Keterangan}</td>
         <td>${entry.Foto}</td>
         </tr>
-    `,
+    `
   );
 
   const htmlTemplate = `
@@ -124,14 +124,11 @@ async function generatePDF(data, targetMonth) {
 }
 
 app.get("/package", (req, res) => {
-  // Baca package.json
   fs.readFile("package.json", "utf8", (err, data) => {
     if (err) {
       console.error(err);
       return res.status(500).json({ error: "Error reading package.json" });
     }
-
-    // Parse data JSON dan kirimkan sebagai respons
     const packageData = JSON.parse(data);
     res.json(packageData);
   });
@@ -142,22 +139,8 @@ app.get("/status", (req, res) => {
   res.send("Server is running");
 });
 
-app.get("/download/:fileName", (req, res) => {
-  const fileName = req.params.fileName;
-  const filePath = path.join(__dirname, fileName);
-  const stat = fs.statSync(filePath);
-
-  res.writeHead(200, {
-    "Content-Type": "application/pdf",
-    "Content-Length": stat.size,
-  });
-
-  const readStream = fs.createReadStream(filePath);
-  readStream.pipe(res);
-});
-
 app.get("/list-directory", (req, res) => {
-  const directoryPath = "./"; // Ubah sesuai dengan direktori yang ingin Anda lihat
+  const directoryPath = "./";
   fs.readdir(directoryPath, (err, files) => {
     if (err) {
       console.error(err);
@@ -185,7 +168,7 @@ app.post("/webhook", async (req, res) => {
     ? body.slice(1).trim().split(/ +/).shift().toLocaleLowerCase()
     : null;
 
-  if (sesi === "pat") {
+  if (sesi === "patrolwa") {
     if (isGroup) return;
     if (fromMe === "62895411310182@s.whatsapp.net") return;
     if (cmd === "ping") {
@@ -211,7 +194,9 @@ app.post("/webhook", async (req, res) => {
       });
       const respon = await res.json();
       if (respon.result === "success") {
-        kirimPesan(from, "text", `Data berhasil disimpan!`, "");
+        // kirimPesan(from, "text", `Data berhasil disimpan!`, "");
+        const caption = `⚠️ LAPORAN BARU ⚠️\n\nLaporan: \n\`${arg}\``;
+        await kirimPesan("120363256542098102@g.us", "text", caption, "");
       }
     }
     if (cmd === "laporan") {
@@ -220,7 +205,7 @@ app.post("/webhook", async (req, res) => {
           from,
           "text",
           `Untuk melihat laporan, ketik ${prefix}laporan 03`,
-          "",
+          ""
         );
       const targetMonth = arg;
       kirimPesan(from, "text", "Under maintenance!", "");
@@ -229,22 +214,22 @@ app.post("/webhook", async (req, res) => {
         const filteredData = await filterDataByMonth(rawData, targetMonth);
         const pdfPath = await generatePDF(filteredData, targetMonth);
         const pdfFileName = `laporan_bulan_${monthTitle}.pdf`;
-        setTimeout(async () => {
-          console.log("PDF file sent to WhatsApp successfully.");
-          kirimPesan(
-            from,
-            "document",
-            `Laporan Bulan ${monthTitle}`,
-            `https://patrolwa.vercel.app/download/${pdfFileName}`,
-          );
-        }, 5000);
+        // setTimeout(async () => {
+        //   console.log("PDF file sent to WhatsApp successfully.");
+        //   kirimPesan(
+        //     from,
+        //     "document",
+        //     `Laporan Bulan ${monthTitle}`,
+        //     `https://patrolwa.vercel.app/download/${pdfFileName}`
+        //   );
+        // }, 5000);
       } catch (error) {
         console.error("An error occurred:", error.message);
         kirimPesan(
           from,
           "text",
           "Terjadi kesalahan saat memproses laporan. Harap coba lagi!",
-          "",
+          ""
         );
       }
     }
