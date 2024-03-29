@@ -29,6 +29,9 @@ const data = [
 const upload = multer({ storage: multer.memoryStorage() });
 
 app.use(express.static(path.join(__dirname, "public")));
+app.get('/cek', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'cek.html'));
+});
 async function fetchData() {
   try {
     const response = await axios.get(
