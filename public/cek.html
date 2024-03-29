@@ -63,6 +63,11 @@
     <div class="container mt-5">
       <div class="row justify-content-center">
         <div class="col-md-6">
+          <div>
+            <div class="alert alert-danger" role="alert">
+              HALAMAN TESTING PAGE
+            </div>
+          </div>
           <div id="offline-message" style="display: none">
             <div class="alert alert-danger" role="alert">
               Anda sedang offline. Silakan cek koneksi internet Anda.
@@ -222,7 +227,7 @@
           return;
         }
         const caption = `⚠️ *LAPORAN BARU* ⚠️
-  %0A%0A*Laporan:*%0A%60${keterangan}%60%0A%0A*Petugas:* ${nomorWhatsApp}`;
+  %0A%0A*Laporan:*%0A${keterangan}%0A%0A*Petugas:* ${nomorWhatsApp}`;
         try {
           let response;
 
