@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -50,7 +50,7 @@
   <body class="bg-gray-100 h-screen dark" data-bs-scheme="dark">
     <nav class="navbar bg-body-tertiary shadow-sm">
       <div class="container-fluid">
-        <a class="navbar-brand" href="/cek">
+        <a class="navbar-brand" href="#">
           <img
             src="https://imgdb.net/storage/uploads/a461f4ba9c9f1f40f9d98c069a8ea5d4b089acf945e0bbeadcd3e13fbafdc21f.png"
             alt="Logo"
@@ -63,6 +63,11 @@
     <div class="container mt-5">
       <div class="row justify-content-center">
         <div class="col-md-6">
+          <div>
+            <div class="alert alert-danger" role="alert">
+              HALAMAN TESTING PAGE
+            </div>
+          </div>
           <div id="offline-message" style="display: none">
             <div class="alert alert-danger" role="alert">
               Anda sedang offline. Silakan cek koneksi internet Anda.
@@ -221,39 +226,34 @@
           alert("Mohon lengkapi keterangan.");
           return;
         }
-        const caption = `⚠️ *LAPORAN BARU* ⚠️
-	%0A%0A*Laporan:*%0A${keterangan}%0A%0A*Petugas:* ${nomorWhatsApp}`;
         try {
           let response;
 
           loadingSpinner.classList.remove("hidden");
 
           submitBtn.disabled = true;
-
+          const production = "120363256542098102@g.us"; // tim sec pn
+          const dev = "120363230010661540@g.us"; // patrol wa
+          const caption = `⚠️ *LAPORAN BARU* ⚠️
+  %0A%0A*Laporan:*%0A${keterangan}%0A%0A*Petugas:* ${nomorWhatsApp}`;
           if (imageUrl != "-") {
             response = await fetch(
-              `https://wa.notifku.my.id/api/send-message?receiver=120363256542098102@g.us&apikey=patrolwa1&mtype=image&url=${imageUrl}&text=${caption}`
+              `https://notifku.my.id/send?number=112233&to=${production}&type=image&img=${imageUrl}&message=${caption}`,
             );
           } else {
             response = await fetch(
-              `https://wa.notifku.my.id/api/send-message?receiver=120363256542098102@g.us&apikey=patrolwa1&mtype=text&text=${caption}`
+              `https://notifku.my.id/send?number=112233&to=${production}&type=chat&message=${caption}`,
             );
           }
-
-          if (response.ok) {
-            // showAlert("Sukses!", "Pesan WhatsApp berhasil dikirim.");
+          const res = await response.json();
+          if (res.status === true) {
+            showAlert("success", "Sukses!", "Pesan WhatsApp berhasil dikirim.");
             form.reset();
             imageContainer.innerHTML = "";
           } else {
             throw new Error("Gagal mengirim pesan WhatsApp.");
           }
-        } catch (error) {
-          console.error("Error!", error.message);
-          showAlert(
-            "Error!",
-            "Terjadi kesalahan saat mengirim pesan WhatsApp."
-          );
-        }
+        } catch (error) {}
       });
 
       form.addEventListener("submit", (e) => {
@@ -264,7 +264,11 @@
         fetch(scriptURL, { method: "POST", body: new FormData(form) })
           .then((response) => {
             if (response.ok) {
-              showAlert("Sukses!", "Data berhasil dikirim.");
+              showAlert(
+                "success",
+                "Sukses!",
+                "Data berhasil disimpan ke database.",
+              );
               form.reset();
               imageContainer.innerHTML = "";
             } else {
@@ -273,7 +277,11 @@
           })
           .catch((error) => {
             console.error("Error!", error.message);
-            showAlert("Error!", "Terjadi kesalahan saat mengirim data.");
+            showAlert(
+              "error",
+              "Error!",
+              "Terjadi kesalahan saat mengirim data.",
+            );
           })
           .finally(() => {
             submitBtn.disabled = false;
@@ -282,9 +290,9 @@
           });
       });
 
-      function showAlert(title, message) {
+      function showAlert(icon, title, message) {
         Swal.fire({
-          icon: "success",
+          icon: icon,
           title: title,
           text: message,
           timer: 2000,
@@ -343,11 +351,11 @@
                     new File([blob], file.name, {
                       type: "image/jpeg",
                       lastModified: Date.now(),
-                    })
+                    }),
                   );
                 },
                 "image/jpeg",
-                0.1
+                0.3,
               ); // Kualitas kompresi (0.5 untuk setengahnya)
             };
           };
