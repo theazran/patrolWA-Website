@@ -32,6 +32,11 @@ app.use(express.static(path.join(__dirname, "public")));
 app.get('/cek', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'cek.html'));
 });
+
+app.get('/tes', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'button.html'));
+});
+
 async function fetchData() {
   try {
     const response = await axios.get(

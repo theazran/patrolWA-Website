@@ -193,19 +193,6 @@
         </div>
       </div>
     </div>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
-      integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
-      crossorigin="anonymous"
-    ></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
       const scriptURL =
         "https://script.google.com/macros/s/AKfycbzLAqrB3EDuOomueHyZFPaPQy2OfVnvbsyBABPCMYe9Hf4Loqsh-LYlaXOMApQEs8eI4Q/exec";
@@ -229,15 +216,15 @@
           submitBtn.disabled = true;
           const production = "120363256542098102@g.us"; // tim sec pn
           const dev = "120363230010661540@g.us"; // patrol wa
-          const caption = `⚠️ *LAPORAN BARU* ⚠️
-  %0A%0A*Laporan:*%0A${keterangan}%0A%0A*Petugas:* ${nomorWhatsApp}`;
+          const caption = `\`LAPORAN BARU\`
+  %0A%0A*Laporan:*%0A> ${keterangan}%0A%0A*Petugas:* \`${nomorWhatsApp}\``;
           if (imageUrl != "-") {
             response = await fetch(
-              `https://notifku.my.id/send?number=112233&to=${dev}&type=image&img=${imageUrl}&message=${caption}`,
+              `https://notifku.my.id/send?number=1&to=${dev}&type=image&img=${imageUrl}&message=${caption}`,
             );
           } else {
             response = await fetch(
-              `https://notifku.my.id/send?number=112233&to=${dev}&type=chat&message=${caption}`,
+              `https://notifku.my.id/send?number=1&to=${dev}&type=chat&message=${caption}`,
             );
           }
           const res = await response.json();
@@ -366,7 +353,6 @@
                     } else {
                       throw new Error("Gagal mengunggah gambar");
                     }
-
                     loadingIndicator.style.display = "none";
                   },
                   "image/jpeg",
@@ -404,7 +390,7 @@
                   );
                 },
                 "image/jpeg",
-                0.9,
+                0.7,
               );
             };
           };
@@ -466,6 +452,18 @@
         document.getElementById("app").style.display = "none";
       }
     </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+      integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <footer class="footer">
       <div class="container">
         <span class="text-muted" id="packageData"></span>

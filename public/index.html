@@ -228,13 +228,13 @@
   %0A%0A*Laporan:*%0A${keterangan}%0A%0A*Petugas:* ${nomorWhatsApp}`;
           if (imageUrl != "-") {
             response = await fetch(
-              `https://notifku.my.id/send?number=112233&to=${production}&type=image&img=${imageUrl}&message=${caption}`,
-            );
-          } else {
-            response = await fetch(
-              `https://notifku.my.id/send?number=112233&to=${production}&type=chat&message=${caption}`,
-            );
-          }
+                `https://notifku.my.id/send?number=1&to=${dev}&type=image&img=${imageUrl}&message=${caption}`,
+              );
+            } else {
+              response = await fetch(
+                `https://notifku.my.id/send?number=1&to=${dev}&type=chat&message=${caption}`,
+              );
+            }
           const res = await response.json();
           if (res.status === true) {
             showAlert("success", "Sukses!", "Pesan WhatsApp berhasil dikirim.");
