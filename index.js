@@ -19,7 +19,7 @@ app.use(
     secret: "secret",
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 86400000 },
+    cookie: { maxAge: 365 * 24 * 60 * 60 * 1000 },
   }),
 );
 
@@ -64,11 +64,11 @@ fs.readFile("./package.json", "utf8", (err, data) => {
 
 const upload = multer({ storage: multer.memoryStorage() });
 
-app.set('view engine', 'ejs');
-app.set('views', __dirname + '/public');
+app.set("view engine", "ejs");
+app.set("views", __dirname + "/public");
 
 // Pengaturan folder statis
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + "/public"));
 
 app.get("/login", (req, res) => {
   if (req.session.loggedIn) {
