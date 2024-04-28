@@ -23,9 +23,29 @@ app.use(
   }),
 );
 
-const rawData = fs.readFileSync("./db/petugas.json");
-const database = JSON.parse(rawData);
-console.log(database);
+const database = [
+  {
+    admin: "admin",
+    password: "admin",
+    nama: "M Asran",
+    wa: "6285255646434",
+    isAdmin: true,
+  },
+  {
+    username: "aldi",
+    password: "aldi123",
+    nama: "Renaldi",
+    wa: "6281241559321",
+    isAdmin: false,
+  },
+  {
+    username: "bahri",
+    password: "bahri123",
+    nama: "Bahri",
+    wa: "6281354958973",
+    isAdmin: false,
+  },
+];
 
 fs.readFile("./package.json", "utf8", (err, data) => {
   if (err) {
