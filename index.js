@@ -64,9 +64,11 @@ fs.readFile("./package.json", "utf8", (err, data) => {
 
 const upload = multer({ storage: multer.memoryStorage() });
 
-app.set("view engine", "ejs");
-app.set("views", "views");
-app.use(express.static(__dirname + "/public"));
+app.set('view engine', 'ejs');
+app.set('views', __dirname + '/public');
+
+// Pengaturan folder statis
+app.use(express.static(__dirname + '/public'));
 
 app.get("/login", (req, res) => {
   if (req.session.loggedIn) {
