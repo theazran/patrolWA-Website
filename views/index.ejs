@@ -47,18 +47,15 @@
   </head>
   <body class="bg-gray-100 h-screen dark" data-bs-scheme="dark">
     <nav class="navbar bg-body-tertiary shadow-sm">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="/cek">
-          <img
-            src="https://imgdb.net/storage/uploads/a461f4ba9c9f1f40f9d98c069a8ea5d4b089acf945e0bbeadcd3e13fbafdc21f.png"
-            alt="Logo"
-            width="100"
-            class="d-inline-block align-text-top"
-          />
-        </a>
-      </div>
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img src="https://imgdb.net/storage/uploads/a461f4ba9c9f1f40f9d98c069a8ea5d4b089acf945e0bbeadcd3e13fbafdc21f.png" alt="Logo" width="100" class="d-inline-block align-text-top" />
+            </a>
+            <a href="/logout" class="btn btn-outline-secondary"><i class="fa-solid fa-right-from-bracket"></i></a>
+        </div>
     </nav>
-    <div class="container mt-5">
+
+    <div class="container mt-3">
       <div class="row justify-content-center">
         <div class="col-md-6">
           <div id="offline-message" style="display: none">
@@ -84,6 +81,11 @@
           />
           <div class="card mb-2">
             <div class="card-body shadow-sm">
+              <span>Halo <%= nama %> 👋, jangan lupa untuk mengirim laporan hari ini!</span>
+            </div>
+          </div>
+          <div class="card mb-2">
+            <div class="card-body shadow-sm">
               <form name="submit-to-google-sheet">
                 <div class="d-grid gap-2 col-6 mx-auto">
                   <label for="fileInput" class="btn btn-primary btn-block mb-2"
@@ -98,15 +100,14 @@
                   value="-"
                   hidden
                 />
-                <div class="form-group">
-                  <select
-                    id="petugasSelect"
+                <input
+                    type="text"
                     name="Petugas"
-                    class="form-control mb-2"
-                  >
-                    <option value="-">-- Pilih Petugas --</option>
-                  </select>
-                </div>
+                    id="petugasSelect"
+                    value="<%= nama %>"
+                    hidden
+                />
+
                 <div class="form-group">
                   <textarea
                     name="Keterangan"
@@ -149,6 +150,28 @@
               </p>
             </div>
           </div>
+
+          <script>
+              setInterval(function() {
+                  fetch('/check-session-status')
+                      .then(response => response.json())
+                      .then(data => {
+                          if (!data.loggedIn) {
+                              Swal.fire({
+                                  icon: 'warning',
+                                  title: 'Sesi Anda telah habis',
+                                  text: 'Silakan login kembali',
+                                  showConfirmButton: false 
+                              });
+                              setTimeout(() => {
+                                  window.location.href = '/login';
+                              }, 1000);
+                          }
+                      })
+                      .catch(error => console.error('Error:', error));
+              }, 5000);
+          </script>
+          
           <script>
             fetch("/package")
               .then((response) => response.json())
@@ -410,39 +433,6 @@
     </script>
 
     <script>
-      async function fetchDataAndDisplay() {
-        try {
-          const response = await fetch("/api/data");
-          const data = await response.json();
-
-          const petugasSelect = document.getElementById("petugasSelect");
-
-          petugasSelect.innerHTML =
-            "<option value=''>-- Pilih Petugas --</option>";
-
-          data.forEach((petugas) => {
-            const option = document.createElement("option");
-            option.text = petugas.namaPetugas;
-            option.value = petugas.namaPetugas;
-            petugasSelect.add(option);
-          });
-        } catch (error) {
-          console.error("Error:", error);
-          const errorMessage = document.createElement("p");
-          errorMessage.textContent = "";
-          document.body.appendChild(errorMessage);
-        }
-      }
-
-      fetchDataAndDisplay();
-
-      document
-        .getElementById("petugasSelect")
-        .addEventListener("change", function () {
-          document.getElementById("waInput").value = this.value;
-        });
-    </script>
-    <script>
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {
           navigator.serviceWorker
@@ -463,9 +453,11 @@
     </script>
     <footer class="footer">
       <div class="container">
-        <span class="text-muted" id="packageData"></span>
+        <span class="text-muted">
+            <%= appName %> - <%= appVersion %>
+        </span>
         <br />
-        <small id="nama"></small>
+        <small>Made with ❤️ by <%= autor %></small>
       </div>
     </footer>
   </body>
