@@ -70,6 +70,7 @@ app.set("views", __dirname + "/public");
 app.use(express.static(__dirname + "/public"));
 
 app.get("/login", (req, res) => {
+  return res.redirect("https://patrolwa.pn-bulukumba.go.id")
   if (req.session.loggedIn) {
     res.redirect("/");
   } else {
