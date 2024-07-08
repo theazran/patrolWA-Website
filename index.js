@@ -102,7 +102,7 @@ app.post("/login", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  return res.redirect("https://patrolwa.pn-bulukumba.go.id")
+  //return res.redirect("https://patrolwa.pn-bulukumba.go.id")
   const loggedIn = req.session.loggedIn || false;
   if (req.session.loggedIn) {
     res.render("index.ejs", { nama: req.session.nama, loggedIn: true });
