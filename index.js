@@ -142,6 +142,9 @@ app.get("/package", (req, res) => {
 });
 
 app.post("/upload", upload.single("image"), async (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*"); // Allow all origins. Change "*" to your specific domain if needed.
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
   try {
     const imageBuffer = req.file.buffer;
     const response = await uploadByBuffer(imageBuffer, "image/jpeg");
