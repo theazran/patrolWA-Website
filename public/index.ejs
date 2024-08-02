@@ -251,11 +251,11 @@
   %0A%0A*Laporan:*%0A${keterangan}%0A%0A*Petugas:* ${nomorWhatsApp}`;
           if (imageUrl != "-") {
             response = await fetch(
-              `https://notifku.my.id/send?number=1&to=${production}&type=image&img=${imageUrl}&message=${caption}`,
+              `https://notifku.my.id/send?number=5&to=${production}&type=image&img=${imageUrl}&message=${caption}`,
             );
           } else {
             response = await fetch(
-              `https://notifku.my.id/send?number=1&to=${production}&type=chat&message=${caption}`,
+              `https://notifku.my.id/send?number=5&to=${production}&type=chat&message=${caption}`,
             );
           }
           const res = await response.json();
