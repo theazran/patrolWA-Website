@@ -26,7 +26,7 @@ app.use(
 const database = [
   {
     admin: "admin",
-    password: "admin",
+    password: "Jempol123",
     nama: "M Asran",
     wa: "6285255646434",
     isAdmin: true,
