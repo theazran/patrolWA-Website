@@ -7,6 +7,9 @@ const path = require("path");
 const { sendMessage } = require("./lib/function");
 const { exec } = require("child_process");
 const session = require("express-session");
+const axios = require("axios");
+const FormData = require("form-data");
+
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -141,19 +144,63 @@ app.get("/package", (req, res) => {
   });
 });
 
+// app.post("/upload", upload.single("image"), async (req, res) => {
+//   res.header("Access-Control-Allow-Origin", "*"); // Allow all origins. Change "*" to your specific domain if needed.
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+//   try {
+//     const imageBuffer = req.file.buffer;
+//     const response = await uploadByBuffer(imageBuffer, "image/jpeg");
+//     const imageUrl = response.link;
+//     res.send(imageUrl);
+//     console.log(response);
+//   } catch (error) {
+//     console.error("Gagal mengunggah gambar:", error);
+//     res.status(500).send("Terjadi kesalahan saat mengunggah gambar");
+//   }
+// });
+
+async function uploadByBuffer(imageBuffer, mimeType) {
+  const form = new FormData();
+  form.append("reqtype", "fileupload");
+  form.append("userhash", "ba439588348b369cc69ff2123"); 
+  form.append("fileToUpload", imageBuffer, {
+    filename: "upload.jpg", 
+    contentType: mimeType,
+  });
+
+  const headers = {
+    ...form.getHeaders(),
+    "Cookie": "PHPSESSID=konngt6240ka860311ord3c76d",
+    "Dnt": "1",
+    "Origin": "https://catbox.moe",
+    "Referer": "https://catbox.moe/",
+    "Sec-Ch-Ua": '"Not/A)Brand";v="8", "Chromium";v="126", "Google Chrome";v="126"',
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+  };
+
+  try {
+    const response = await axios.post("https://catbox.moe/user/api.php", form, { headers });
+    return response.data; 
+  } catch (error) {
+    console.error("Error uploading to Catbox:", error);
+    throw error;
+  }
+}
+
 app.post("/upload", upload.single("image"), async (req, res) => {
-  res.header("Access-Control-Allow-Origin", "*"); // Allow all origins. Change "*" to your specific domain if needed.
+  res.header("Access-Control-Allow-Origin", "*"); 
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
   try {
-    const imageBuffer = req.file.buffer;
-    const response = await uploadByBuffer(imageBuffer, "image/jpeg");
-    const imageUrl = response.link;
+    const imageBuffer = req.file.buffer; 
+    const response = await uploadByBuffer(imageBuffer, req.file.mimetype); // Pass the buffer and mimetype (e.g., "image/jpeg")
+    const imageUrl = response; 
     res.send(imageUrl);
-    console.log(response);
+    console.log("File uploaded successfully:", response);
   } catch (error) {
-    console.error("Gagal mengunggah gambar:", error);
-    res.status(500).send("Terjadi kesalahan saat mengunggah gambar");
+    console.error("Error uploading image:", error);
+    res.status(500).send("Failed to upload image");
   }
 });
 
