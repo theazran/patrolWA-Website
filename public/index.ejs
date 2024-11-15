@@ -204,7 +204,6 @@
             `https://notifku.my.id/send?number=555&to=${dev}&type=image&img=${imageUrl}&message=${caption}`,
           );
         } else {
-          throw new Error("Gambar tidak boleh kosong.");
           response = await fetch(
             `https://notifku.my.id/send?number=555&to=${dev}&type=chat&message=${caption}`,
           );
