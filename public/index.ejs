@@ -195,16 +195,18 @@
 
         submitBtn.disabled = true;
         const production = "120363256542098102@g.us"; // tim sec pn
-        const dev = "120363230010661540@g.us"; // patrol wa
+        const dev1 = "120363230010661540@g.us"; // patrol wa
+        const dev = "6285255646434-1613359737@g.us"; // tempat mencatat
         const caption = `⚠️ *LAPORAN BARU* ⚠️
   %0A%0A*Laporan:*%0A${keterangan}%0A%0A*Petugas:* ${nomorWhatsApp}`;
         if (imageUrl != "-") {
           response = await fetch(
-            `https://notifku.my.id/send?number=5&to=${production}&type=image&img=${imageUrl}&message=${caption}`,
+            `https://notifku.my.id/send?number=555&to=${dev}&type=image&img=${imageUrl}&message=${caption}`,
           );
         } else {
+          throw new Error("Gambar tidak boleh kosong.");
           response = await fetch(
-            `https://notifku.my.id/send?number=5&to=${production}&type=chat&message=${caption}`,
+            `https://notifku.my.id/send?number=555&to=${dev}&type=chat&message=${caption}`,
           );
         }
         const res = await response.json();
